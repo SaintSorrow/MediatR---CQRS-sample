@@ -20,5 +20,10 @@ namespace Sample.Infrastructure.Database
         {
             base.OnModelCreating(builder);
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            options.UseSqlite("Data Source=todo.db");
+        }
     }
 }

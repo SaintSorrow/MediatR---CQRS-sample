@@ -8,7 +8,7 @@ namespace Sample.Domain.Models
 {
     public class TodoItem
     {
-        public Guid Id { get; }
+        public Guid Id { get; private set; }
 
         public bool IsDone { get; set; }
 
