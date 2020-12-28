@@ -50,8 +50,9 @@ namespace Sample.Presentation.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> MarkDone([FromBody]MarkDoneCommand command)
+        public async Task<IActionResult> MarkDone(Guid id)
         {
+            var command = new MarkDoneCommand { TodoItemId = id };
             await _mediator.Send(command);
 
             return RedirectToAction("Index");

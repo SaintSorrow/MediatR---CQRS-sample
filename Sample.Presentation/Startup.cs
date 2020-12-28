@@ -33,7 +33,8 @@ namespace MediatR_CQRS_Sample
         {
             services.AddDbContext<ApplicationDbContext>();
             services.AddMediatR(typeof(AddTodoItemCommand).GetTypeInfo().Assembly);
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -42,6 +43,7 @@ namespace MediatR_CQRS_Sample
 
             services.AddAuthentication();
 
+            services.AddMvc();
             services.AddScoped<ITodoItemRepository, TodoItemRepository>();
         }
 

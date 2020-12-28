@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Sample.Domain.Models;
+using Sample.Domain.Roles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,12 +26,12 @@ namespace Sample.Presentation
         private static async Task EnsureRolesAsync(RoleManager<IdentityRole> roleManager)
         {
             var alreadyExists = await roleManager
-                .RoleExistsAsync("Administrator");
+                .RoleExistsAsync(RoleNames.Administrator);
 
             if (alreadyExists) return;
 
             await roleManager.CreateAsync(
-                new IdentityRole("Administrator"));
+                new IdentityRole(RoleNames.Administrator));
         }
 
         private static async Task EnsureTestAdminAsync(UserManager<ApplicationUser> userManager)
@@ -47,7 +48,7 @@ namespace Sample.Presentation
                 Email = "admin@todo.local"
             };
 
-            await userManager.CreateAsync(testAdmin, "test123");
+            await userManager.CreateAsync(testAdmin, "Test_123");
             await userManager.AddToRoleAsync(testAdmin, "Administrator");
         }
     }
