@@ -13,6 +13,9 @@ using MediatR;
 using System.Reflection;
 using Sample.Domain.Models;
 using Microsoft.AspNetCore.Identity;
+using Sample.Domain.Interfaces;
+using Sample.Infrastructure.Repositories;
+using Sample.Application.TodoItems.Commands.AddTodoItem;
 
 namespace MediatR_CQRS_Sample
 {
@@ -29,7 +32,7 @@ namespace MediatR_CQRS_Sample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>();
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddMediatR(typeof(AddTodoItemCommand).GetTypeInfo().Assembly);
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -38,6 +41,8 @@ namespace MediatR_CQRS_Sample
             services.AddRazorPages();
 
             services.AddAuthentication();
+
+            services.AddScoped<ITodoItemRepository, TodoItemRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
