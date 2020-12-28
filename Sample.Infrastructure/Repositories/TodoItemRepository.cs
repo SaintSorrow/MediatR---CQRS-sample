@@ -21,14 +21,15 @@ namespace Sample.Infrastructure.Repositories
 
         public async Task AddItemAsync(TodoItem newItem)
         {
-            await this._context.Items.AddAsync(newItem);
+            await _context.Items.AddAsync(newItem);
+            await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TodoItem>> GetUserIncompleteItemsAsync(string userId)
+        public async Task<TodoItem[]> GetUserIncompleteItemsAsync(string userId)
         {
             var items = await _context.Items
                 .Where(x => x.IsDone == false && x.UserId == userId)
-                .ToListAsync();
+                .ToArrayAsync();
 
             return items;
         }

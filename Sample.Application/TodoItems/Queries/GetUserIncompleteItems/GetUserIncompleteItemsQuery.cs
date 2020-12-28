@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Sample.Domain.Interfaces;
+using Sample.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Sample.Application.TodoItems.Queries.GetUserIncompleteItems
 {
-    public class GetUserIncompleteItemsQuery : IRequest<IEnumerable<TodoItemDto>>
+    public class GetUserIncompleteItemsQuery : IRequest<TodoItem[]>
     {
         public string UserId { get; set; }
 
@@ -18,7 +19,7 @@ namespace Sample.Application.TodoItems.Queries.GetUserIncompleteItems
         }
 
         public class GetUserIncompleteItemsQueryHandler
-            : IRequestHandler<GetUserIncompleteItemsQuery, IEnumerable<TodoItemDto>>
+            : IRequestHandler<GetUserIncompleteItemsQuery, TodoItem[]>
         {
             private readonly ITodoItemRepository _todoItemRepository;
 
@@ -27,17 +28,11 @@ namespace Sample.Application.TodoItems.Queries.GetUserIncompleteItems
                 _todoItemRepository = todoItemRepository;
             }
 
-            public async Task<IEnumerable<TodoItemDto>> Handle(GetUserIncompleteItemsQuery request, CancellationToken cancellationToken)
+            public async Task<TodoItem[]> Handle(GetUserIncompleteItemsQuery request, CancellationToken cancellationToken)
             {
                 var items = await _todoItemRepository.GetUserIncompleteItemsAsync(request.UserId);
-                var todoItems = new List<TodoItemDto>();
 
-                foreach (var item in items)
-                {
-                    todoItems.Add(new TodoItemDto(item));
-                }
-
-                return todoItems;
+                return items;
             }
         }
     }

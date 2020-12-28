@@ -6,6 +6,7 @@ using Sample.Application.TodoItems.Commands.AddTodoItem;
 using Sample.Application.TodoItems.Commands.MarkDone;
 using Sample.Application.TodoItems.Queries.GetUserIncompleteItems;
 using Sample.Domain.Models;
+using Sample.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,30 +26,35 @@ namespace Sample.Presentation.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> GetUserItems()
+        public async Task<IActionResult> Index()
         {
             var currentUser = await _userManager.GetUserAsync(User);
             var query = new GetUserIncompleteItemsQuery(currentUser.Id);
             var result = await _mediator.Send(query);
 
-            return Ok(result);
+            var viewModel = new TodoViewModel()
+            {
+                Items = result
+            };
+
+            return View(viewModel);
         }
 
-        public async Task<IActionResult> AddItem([FromBody]AddTodoItemCommand command)
+        public async Task<IActionResult> AddItem(AddTodoItemCommand command)
         {
             var currentUser = await _userManager.GetUserAsync(User);
             command.UserId = currentUser.Id;
 
             await _mediator.Send(command);
 
-            return RedirectToAction("GetUserItems");
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> MarkDone([FromBody]MarkDoneCommand command)
         {
             await _mediator.Send(command);
 
-            return RedirectToAction("GetUserItems");
+            return RedirectToAction("Index");
         }
     }
 }

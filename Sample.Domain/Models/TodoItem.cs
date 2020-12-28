@@ -28,5 +28,10 @@ namespace Sample.Domain.Models
             UserId = userId;
             Title = title;
         }
+
+        public TodoItem()
+        {
+            Id = Guid.NewGuid();
+        }
     }
 }

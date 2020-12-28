@@ -8,7 +8,7 @@ namespace Sample.Domain.Interfaces
 {
     public interface ITodoItemRepository
     {
-        Task<IEnumerable<TodoItem>> GetUserIncompleteItemsAsync(string userId);
+        Task<TodoItem[]> GetUserIncompleteItemsAsync(string userId);
         Task AddItemAsync(TodoItem newItem);
         Task MarkDoneAsync(Guid id);
     }
